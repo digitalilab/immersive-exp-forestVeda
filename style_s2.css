@@ -9,6 +9,7 @@ html, body {
   min-height: 100vh;
   height: 100%;
   width: 100vw;
+  overflow: hidden;
   background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
   overscroll-behavior: none !important;
   overscroll-behavior-y: none !important;
@@ -37,6 +38,19 @@ canvas {
   height: 100vh;
   object-fit: cover;
 }
+
+.scroll-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;       
+  -webkit-overflow-scrolling: touch;    
+}
+
+
 
 .details {
   min-height: 100vh;

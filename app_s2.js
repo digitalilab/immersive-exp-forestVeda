@@ -241,7 +241,8 @@ gsap.to(ball, {
   scrollTrigger: {
     scrub: 0.0,
     pin: "canvas",
-    end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
+    end: () => `+=${window.innerHeight * 2}`,
+    scroller: ".scroll-container" // Reduced scroll length
   },
   onUpdate: () => {
     render();
