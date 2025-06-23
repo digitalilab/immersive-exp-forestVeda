@@ -293,15 +293,28 @@ function animate() {
 // Start the animation loop
 animate();
 
-// Render current frame
+let lastGoodImage = null;
+
+// Render current frame with graceful fallback for missing frames
 function render() {
   context.canvas.width = images[0].width;
   context.canvas.height = images[0].height;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   // Use held frame if button was completed
   const frameToShow = isFrameHeld ? heldFrame : ball.frame;
-  context.drawImage(images[frameToShow], 0, 0);
+  const idx = Math.max(0, Math.min(images.length - 1, Math.round(frameToShow)));
+  const img = images[idx];
+
+  if (img && img.complete && img.naturalWidth > 0) {
+    context.drawImage(img, 0, 0);
+    lastGoodImage = img;
+  } else if (lastGoodImage) {
+    context.drawImage(lastGoodImage, 0, 0);
+  } else {
+    context.fillStyle = '#171717';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
   // Show first circular button in frames 55-120
   if (ball.frame >= 55 && ball.frame <= 120 && !isFrameHeld) {
