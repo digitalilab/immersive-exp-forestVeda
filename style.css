@@ -25,13 +25,12 @@ body {
 }
 
 canvas {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  /* Disable momentum scrolling on canvas elements */
-  -webkit-overflow-scrolling: auto;
-  overscroll-behavior: none;
-  touch-action: manipulation;
+  display:block;
+  position:fixed;
+  top:0; left:0;
+  touch-action:none;      /* blocks scroll without JS */
+  will-change:transform,opacity;
+  backface-visibility:hidden;
 }
 
 .details {
@@ -274,6 +273,7 @@ canvas {
   object-fit: cover;
   position: fixed;
   top: 0;
+  pointer-events: none;
   left: 0;
   z-index: 2;
   mix-blend-mode: screen;
