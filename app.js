@@ -223,13 +223,13 @@ gsap.to(ball, {
   snap: "frame",
   ease: "none",
   scrollTrigger: {
-    scrub: 0.0,
-    pin: "canvas",
-    end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
+    scrub: 0,
+    pin: canvas,
+    pinType: "transform",
+    anticipatePin: 1,
+    end: () => `+=${window.innerHeight * 2}`,
   },
-  onUpdate: () => {
-    render();
-  },
+  onUpdate: render
 });
 
 // Animation loop for smooth parallax and cursor

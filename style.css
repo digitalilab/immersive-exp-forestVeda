@@ -32,6 +32,9 @@ canvas {
   -webkit-overflow-scrolling: auto;
   overscroll-behavior: none;
   touch-action: manipulation;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
 }
 
 .details {
