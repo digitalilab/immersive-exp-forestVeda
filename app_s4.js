@@ -175,6 +175,5 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-// ───────────────────────────── STARTUP ─────────────────────────────────────
 preloadFrames();
 animate();

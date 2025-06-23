@@ -11,7 +11,6 @@ html, body {
   width: 100vw;
   background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
   overscroll-behavior: none !important;
-  -webkit-overflow-scrolling: auto !important;
 }
 
 body {
@@ -81,18 +80,6 @@ canvas {
   font-family: 'Trajan Pro', serif;
   flex-direction: column;
   gap: 1.5rem;
-}
-
-@supports (-webkit-overflow-scrolling: touch) {
-  html, body {
-    background-attachment: scroll !important;
-    background-size: cover !important;
-  }
-  .canvas, .text-canvas, .cursor-canvas {
-    /* promote to its own layer to avoid Safari black frames */
-    transform: translateZ(0);
-    will-change: transform, opacity;
-  }
 }
 
 .loader::before {
@@ -693,7 +680,6 @@ button:hover ~ .custom-cursor {
   border-color: white;
 }
 
-/* Single button styling - make it shorter */
 .link-buttons-container:has(.link-button:only-child) .link-button {
   max-width: 300px;
   flex: none;
