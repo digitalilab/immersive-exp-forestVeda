@@ -100,8 +100,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Add touch event listeners for mobile
-document.addEventListener('touchstart', handleTouch);
-document.addEventListener('touchmove', handleTouch);
+document.addEventListener('touchstart', handleTouch, { passive: false });
+document.addEventListener('touchmove', handleTouch, { passive: false });
 
 function handleTouch(e) {
   e.preventDefault(); // Prevent default touch behavior
@@ -241,7 +241,8 @@ function animate() {
   
   // Apply the transform to the text canvas
   textCanvas.style.transform = `translate(${currentX}px, ${currentY}px)`;
-  
+
+    render(); // Add this
   requestAnimationFrame(animate);
 }
 
