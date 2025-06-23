@@ -250,11 +250,13 @@ animate();
 
 // Render current frame
 function render() {
-  console.log( 'render frame:', ball.frame, '| canvas size:', canvas.width, canvas.height, 
-    '| image size:',
-    images[ball.frame] && images[ball.frame].width,
-    images[ball.frame] && images[ball.frame].height
-    );
+  console.log(
+  'render:',
+  'frame', ball.frame,
+  '| images[ball.frame]', images[ball.frame],
+  '| image complete?', images[ball.frame] && images[ball.frame].complete,
+  '| canvas size', canvas.width, canvas.height
+);
   // context.canvas.width = images[0].width;
   // context.canvas.height = images[0].height;
   context.clearRect(0, 0, canvas.width, canvas.height);
