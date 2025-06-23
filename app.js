@@ -1,3 +1,6 @@
+// Prefetch is now handled by prefetch-utils.js
+// Scene-specific initialization can be added here if needed
+
 const canvas = document.querySelector(".canvas");
 const textCanvas = document.querySelector(".text-canvas");
 const cursorCanvas = document.querySelector(".cursor-canvas");
@@ -103,19 +106,22 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Add touch event listeners for mobile
-document.addEventListener('touchstart', handleTouch, { passive: false });
-document.addEventListener('touchmove', handleTouch, {passive: false});
+document.addEventListener('touchstart', handleTouch);
+document.addEventListener('touchmove', handleTouch);
 
 function handleTouch(e) {
   e.preventDefault(); // Prevent default touch behavior
   
+  // Get touch position
   const touch = e.touches[0];
   const touchX = touch.clientX;
   const touchY = touch.clientY;
   
+  // Calculate position relative to center of screen
   mouseX = (touchX - window.innerWidth / 2) * 0.02;
   mouseY = (touchY - window.innerHeight / 2) * 0.02;
   
+  // Create particles at touch position
   createParticles(touchX, touchY);
 }
 
