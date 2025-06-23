@@ -286,6 +286,7 @@ function render() {
   if (img && img.complete && img.naturalWidth > 0) {
     context.drawImage(img, 0, 0);
     lastGoodImage = img;
+
     lastGoodIdx = idx;
   } else if (lastGoodImage) {
     context.drawImage(lastGoodImage, 0, 0);

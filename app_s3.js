@@ -296,6 +296,7 @@ animate();
 let lastGoodImage = null;
 let lastGoodIdx = 0;
 
+
 // Render current frame with graceful fallback for missing frames
 function render() {
   context.canvas.width = images[0].width;
@@ -310,7 +311,7 @@ function render() {
   if (img && img.complete && img.naturalWidth > 0) {
     context.drawImage(img, 0, 0);
     lastGoodImage = img;
-    lastGoodIdx = idx;
+   lastGoodIdx = idx;
   } else if (lastGoodImage) {
     context.drawImage(lastGoodImage, 0, 0);
   } else {
