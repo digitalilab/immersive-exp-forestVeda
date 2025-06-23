@@ -251,13 +251,17 @@ animate();
 function render() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Clamp the frame index so it's always in-bounds
   const idx = Math.max(0, Math.min(images.length - 1, Math.round(ball.frame)));
+  const img = images[idx];
 
-  // Only draw if the image exists and is fully loaded
-  if (images[idx] && images[idx].complete && images[idx].naturalWidth !== 0) {
-    context.drawImage(images[idx], 0, 0);
-  } // else: leave canvas cleared (no error, no crash, no black flash)
+  if (img && img.complete && img.naturalWidth > 0) {
+    context.drawImage(img, 0, 0);
+  } else {
+    // fallback: fill with a color or pattern
+    context.fillStyle = "#222"; // Or any color that matches your UI
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    // Optionally, draw a "missing frame" icon/text here
+  }
 
   if (idx >= 160) {
     linkButtonsContainer.style.display = 'flex';
