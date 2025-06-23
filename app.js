@@ -217,22 +217,19 @@ for (let i = 0; i < frameCount; i++) {
   images.push(img);
 }
 
-//— after your images[] and ball setup…
-
+// Scroll animation with GSAP
 gsap.to(ball, {
   frame: frameCount - 1,
   snap: "frame",
   ease: "none",
   scrollTrigger: {
-    pin: canvas,
-    pinType: "transform",     // keep it on a composited layer
-    anticipatePin: 1,         // hold pin a tick longer
-    scrub: 0,
-    end: () => `+=${window.innerHeight * 2}`,
-    onLeave:    () => render(),  // redraw on unpin
-    onLeaveBack:() => render()   // and if you scroll back past start
+    scrub: 0.0,
+    pin: "canvas",
+    end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
   },
-  onUpdate: render
+  onUpdate: () => {
+    render();
+  },
 });
 
 // Animation loop for smooth parallax and cursor
