@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Prefetch critical resources -->
+  <link rel="prefetch" href="Seaweda Flower.svg" />
+
+  <!-- Prefetch GSAP libraries -->
+  <link rel="prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" />
+  <link rel="prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js" />
+
+  <!-- Prefetch Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+  <title>Forest Experience</title>
+</head>
+<body>
+  <!-- Floating UI Bar -->
+  <div class="floating-ui-bar">
+    <div class="floating-ui-menu" id="floatingMenuBtn">
+      <span class="floating-ui-icon">&#9776;</span>
+      <span class="floating-ui-label">MENU</span>
+    </div>
+    <div class="floating-ui-scroll" id="floatingScrollBtn">
+      <span class="floating-ui-label">SCROLL</span>
+      <span class="floating-ui-scroll-circle">
+        <svg width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="20" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.6" />
+          <polyline points="22,15 22,29" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polyline points="18,25 22,29 26,25" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+    <div class="floating-ui-sound" id="floatingSoundBtn">
+      <span class="floating-ui-label">SOUND</span>
+      <span class="sound-bars" id="soundBars">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Loader Screen -->
+  <div class="loader">
+    <h2>Forest Experience</h2>
+    <div class="loading-bar"></div>
+    <div id="progress">0%</div>
+  </div>
+
+  <!-- Canvases for scene, text parallax & particles -->
+  <canvas class="canvas"></canvas>
+  <canvas class="text-canvas"></canvas>
+  <canvas class="cursor-canvas"></canvas>
+
+  <!-- Link Buttons once loaded -->
+  <div class="link-buttons-container">
+    <button id="exploreForestVedaBtn" class="link-button">Explore ForestVeda</button>
+  </div>
+
+  <!-- GSAP Core + ScrollTrigger -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
+    integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"
+    integrity="sha512-tHvUcUQYi35zApvAa5TNR3fNhBQkVtkmWKfacnpxmix4/VTGz1lGjIVyLMp7gLgAvg+aKJjnVKokXJNS5GZ+/g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+  <!-- Prefetch util (if used) -->
+  <script src="./prefetch-utils.js"></script>
+
+  <!-- Disable iOS rubber-band overscroll -->
+  <script>
+    document.addEventListener('touchmove', function(e) {
+      if (e.touches.length === 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+
+  <!-- Main scene logic + Floating UI behavior -->
+  <script src="./app_s4.js"></script>
+  <script src="./floating-ui.js"></script>
+</body>
+</html>
