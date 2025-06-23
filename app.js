@@ -1,6 +1,3 @@
-// Prefetch is now handled by prefetch-utils.js
-// Scene-specific initialization can be added here if needed
-
 const canvas = document.querySelector(".canvas");
 const textCanvas = document.querySelector(".text-canvas");
 const cursorCanvas = document.querySelector(".cursor-canvas");
@@ -28,17 +25,14 @@ canvas.height = window.innerHeight;
 
 const context = canvas.getContext("2d");
 
-// Set up text canvas
 textCanvas.width = window.innerWidth;
 textCanvas.height = window.innerHeight;
 const textContext = textCanvas.getContext("2d");
 
-// Set up cursor canvas
-cursorCanvas.width = window.innerWidth;
-cursorCanvas.height = window.innerHeight;
+// cursorCanvas.width = window.innerWidth;
+// cursorCanvas.height = window.innerHeight;
 const cursorContext = cursorCanvas.getContext("2d");
 
-// Particle system for cursor
 class Particle {
   constructor(x, y) {
     this.x = x;
@@ -232,7 +226,6 @@ gsap.to(ball, {
   },
 });
 
-// Animation loop for smooth parallax and cursor
 function animate() {
   // Clear cursor canvas
   cursorContext.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
@@ -260,7 +253,6 @@ function render() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.drawImage(images[ball.frame], 0, 0);
 
-  // Show link button in frames 160-200
   if (ball.frame >= 160) {
     linkButtonsContainer.style.display = 'flex';
     linkButtonsContainer.style.opacity = '1';
@@ -274,18 +266,14 @@ function render() {
   }
 }
 
-// Add resize handler to update mobile detection
 window.addEventListener('resize', () => {
   const wasMobile = isMobile;
   isMobile = window.innerWidth <= 768;
   
-  // If mobile state changed, reload the appropriate frames
   if (wasMobile !== isMobile) {
-    // Clear existing images
     images.length = 0;
     loadedImages = 0;
     
-    // Reload frames with same frame count but different folder
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       img.src = currentFrame(i);
