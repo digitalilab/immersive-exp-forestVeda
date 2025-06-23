@@ -11,6 +11,7 @@ html, body {
   width: 100vw;
   background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
   overscroll-behavior: none !important;
+  overscroll-behavior-y: none !important;
 }
 
 body {
