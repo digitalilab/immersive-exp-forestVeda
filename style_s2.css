@@ -39,19 +39,6 @@ canvas {
   object-fit: cover;
 }
 
-.scroll-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow-y: scroll;
-  overscroll-behavior-y: contain;       
-  -webkit-overflow-scrolling: touch;    
-}
-
-
-
 .details {
   min-height: 100vh;
   display: flex;

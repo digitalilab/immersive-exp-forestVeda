@@ -242,7 +242,7 @@ gsap.to(ball, {
     scrub: 0.0,
     pin: "canvas",
     end: () => `+=${window.innerHeight * 2}`,
-    scroller: ".scroll-container" // Reduced scroll length
+    // scroller: ".scroll-container" // Reduced scroll length
   },
   onUpdate: () => {
     render();
@@ -294,7 +294,6 @@ function render() {
   }
 }
 
-// Add resize handler to update mobile detection
 window.addEventListener('resize', () => {
   const wasMobile = isMobile;
   isMobile = window.innerWidth <= 768;
