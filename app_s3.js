@@ -196,7 +196,12 @@ for (let i = 0; i < frameCount; i++) {
     loadedImages++;
     checkLoadingComplete();
   };
-  img.onload = () => {
+  img.onload = async () => {
+    if (img.decode) {
+      try {
+        await img.decode();
+      } catch (_) {}
+    }
     loadedImages++;
     checkLoadingComplete();
   };
@@ -231,8 +236,12 @@ function checkLoadingComplete() {
             duration: 0.8,
             ease: "power2.out"
           });
-          
-          render();
+
+          if (window.ScrollTrigger) {
+            ScrollTrigger.refresh();
+          }
+
+          updateFrame();
         }
       });
     }, remainingTime);
@@ -240,6 +249,15 @@ function checkLoadingComplete() {
 }
 
 // Scroll animation with GSAP
+function updateFrame() {
+  const frameToShow = isFrameHeld ? heldFrame : ball.frame;
+  const idx = Math.max(0, Math.min(images.length - 1, Math.round(frameToShow)));
+  if (idx !== currentFrameIndex) {
+    currentFrameIndex = idx;
+    requestAnimationFrame(render);
+  }
+}
+
 gsap.to(ball, {
   frame: frameCount - 1,
   snap: "frame",
@@ -249,9 +267,7 @@ gsap.to(ball, {
     pin: "canvas",
     end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
   },
-  onUpdate: () => {
-    render();
-  },
+  onUpdate: updateFrame,
 });
 
 // Animation loop for smooth parallax and cursor
@@ -269,8 +285,6 @@ function animate() {
   // Apply the transform to the text canvas
   textCanvas.style.transform = `translate(${currentX}px, ${currentY}px)`;
   
-  const frameToShow = isFrameHeld ? heldFrame : ball.frame;
-  context.drawImage(images[frameToShow], 0, 0);
 
   // Show circular button in frames 55-120 only if meditation hasn't been completed
   if (ball.frame >= 55 && ball.frame <= 120 && !isFrameHeld && !isMeditationCompleted) {
@@ -294,23 +308,41 @@ function animate() {
 animate();
 
 let lastGoodImage = null;
-let lastGoodIdx = 0;
+let currentFrameIndex = -1;
+// Draw the current frame with graceful fallback for missing frames
+  const img = images[currentFrameIndex];
 
 
-// Render current frame with graceful fallback for missing frames
-function render() {
-  context.canvas.width = images[0].width;
-  context.canvas.height = images[0].height;
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  try {
+    if (img && img.complete && img.naturalWidth > 0) {
+      context.drawImage(img, 0, 0);
+      lastGoodImage = img;
+    } else if (lastGoodImage) {
+      context.drawImage(lastGoodImage, 0, 0);
+    } else {
+      context.fillStyle = '#171717';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  } catch (err) {
+    console.error('drawImage failed', err);
+    if (lastGoodImage) {
+      try {
+        context.drawImage(lastGoodImage, 0, 0);
+      } catch (_) {
+        context.fillStyle = '#171717';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+  }
 
-  // Use held frame if button was completed
-  const frameToShow = isFrameHeld ? heldFrame : ball.frame;
-  const idx = Math.max(0, Math.min(images.length - 1, Math.round(frameToShow)));
-  const img = images[idx];
+      img.onload = async () => {
+        if (img.decode) {
+          try {
+            await img.decode();
+          } catch (_) {}
+        }
 
-  if (img && img.complete && img.naturalWidth > 0) {
-    context.drawImage(img, 0, 0);
-    lastGoodImage = img;
+          updateFrame();
    lastGoodIdx = idx;
   } else if (lastGoodImage) {
     context.drawImage(lastGoodImage, 0, 0);
@@ -650,7 +682,7 @@ function stopBreathingExercise() {
   });
 
   // Set meditation as completed
-  isMeditationCompleted = true;
+      updateFrame();
 
   // Smoothly hide breathing container with enhanced transition
   gsap.to(breathingContainer, {
