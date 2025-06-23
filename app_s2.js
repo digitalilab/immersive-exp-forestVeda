@@ -79,6 +79,7 @@ function updateParticles() {
   }
 }
 
+// Mouse position tracking
 let mouseX = 0;
 let mouseY = 0;
 let targetX = 0;
@@ -101,15 +102,7 @@ document.addEventListener('touchstart', handleTouch);
 document.addEventListener('touchmove', handleTouch);
 
 function handleTouch(e) {
-  e.preventDefault();
-  
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-  const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-
-  if (scrollTop === 0 || scrollTop + clientHeight >= scrollHeight) {
-    e.preventDefault();
-  } 
+  e.preventDefault(); 
   
   const touch = e.touches[0];
   const touchX = touch.clientX;
@@ -121,10 +114,13 @@ function handleTouch(e) {
   createParticles(touchX, touchY);
 }
 
+// Detect mobile device
 const isMobile = window.innerWidth <= 768; // Updated to standard mobile breakpoint
 
+// Set frame count
 const frameCount = 200; // Same frame count for both mobile and desktop
 
+// Choose image folder based on device
 const currentFrame = (index) =>
   isMobile
     ? `./Scene2_MO/${(index + 1).toString()}.webp`
@@ -134,6 +130,7 @@ const images = [];
 let ball = { frame: 0 };
 let loadedImages = 0;
 
+// Add state for frame holding
 let isFrameHeld = false;
 let heldFrame = 0;
 
@@ -241,8 +238,7 @@ gsap.to(ball, {
   scrollTrigger: {
     scrub: 0.0,
     pin: "canvas",
-    end: () => `+=${window.innerHeight * 2}`,
-    // scroller: ".scroll-container" // Reduced scroll length
+    end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
   },
   onUpdate: () => {
     render();
@@ -294,6 +290,7 @@ function render() {
   }
 }
 
+// Add resize handler to update mobile detection
 window.addEventListener('resize', () => {
   const wasMobile = isMobile;
   isMobile = window.innerWidth <= 768;
