@@ -20,8 +20,8 @@ const navigateTo = (url) => {
 
 exploreForestVedaBtn.addEventListener('click', () => navigateTo('index_s2.html'));
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
 
 const context = canvas.getContext("2d");
 
@@ -29,8 +29,8 @@ textCanvas.width = window.innerWidth;
 textCanvas.height = window.innerHeight;
 const textContext = textCanvas.getContext("2d");
 
-// cursorCanvas.width = window.innerWidth;
-// cursorCanvas.height = window.innerHeight;
+cursorCanvas.width = window.innerWidth;
+cursorCanvas.height = window.innerHeight;
 const cursorContext = cursorCanvas.getContext("2d");
 
 class Particle {
@@ -183,6 +183,8 @@ for (let i = 0; i < frameCount; i++) {
     updateLoadingProgress(percent);
 
     if (loadedImages === frameCount) {
+      canvas.width = images[0].width;
+      canvas.height = images[0].height;
       // Fade out loader
       gsap.to(loader, {
         opacity: 0,
@@ -248,8 +250,8 @@ animate();
 
 // Render current frame
 function render() {
-  context.canvas.width = images[0].width;
-  context.canvas.height = images[0].height;
+  // context.canvas.width = images[0].width;
+  // context.canvas.height = images[0].height;
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.drawImage(images[ball.frame], 0, 0);
 
