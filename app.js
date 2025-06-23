@@ -248,32 +248,57 @@ function animate() {
 // Start the animation loop
 animate();
 
-// Render current frame
 function render() {
-  console.log(
-  'render:',
-  'frame', ball.frame,
-  '| images[ball.frame]', images[ball.frame],
-  '| image complete?', images[ball.frame] && images[ball.frame].complete,
-  '| canvas size', canvas.width, canvas.height
-);
-  // context.canvas.width = images[0].width;
-  // context.canvas.height = images[0].height;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(images[ball.frame], 0, 0);
 
-  if (ball.frame >= 160) {
+  // Clamp the frame index so it's always in-bounds
+  const idx = Math.max(0, Math.min(images.length - 1, Math.round(ball.frame)));
+
+  // Only draw if the image exists and is fully loaded
+  if (images[idx] && images[idx].complete && images[idx].naturalWidth !== 0) {
+    context.drawImage(images[idx], 0, 0);
+  } // else: leave canvas cleared (no error, no crash, no black flash)
+
+  if (idx >= 160) {
     linkButtonsContainer.style.display = 'flex';
     linkButtonsContainer.style.opacity = '1';
   } else {
     linkButtonsContainer.style.opacity = '0';
     setTimeout(() => {
-      if (ball.frame < 160) {
+      if (idx < 160) {
         linkButtonsContainer.style.display = 'none';
       }
     }, 500);
   }
 }
+
+
+// Render current frame
+// function render() {
+//   console.log(
+//   'render:',
+//   'frame', ball.frame,
+//   '| images[ball.frame]', images[ball.frame],
+//   '| image complete?', images[ball.frame] && images[ball.frame].complete,
+//   '| canvas size', canvas.width, canvas.height
+// );
+//   // context.canvas.width = images[0].width;
+//   // context.canvas.height = images[0].height;
+//   context.clearRect(0, 0, canvas.width, canvas.height);
+//   context.drawImage(images[ball.frame], 0, 0);
+
+//   if (ball.frame >= 160) {
+//     linkButtonsContainer.style.display = 'flex';
+//     linkButtonsContainer.style.opacity = '1';
+//   } else {
+//     linkButtonsContainer.style.opacity = '0';
+//     setTimeout(() => {
+//       if (ball.frame < 160) {
+//         linkButtonsContainer.style.display = 'none';
+//       }
+//     }, 500);
+//   }
+// }
 
 window.addEventListener('resize', () => {
   const wasMobile = isMobile;
