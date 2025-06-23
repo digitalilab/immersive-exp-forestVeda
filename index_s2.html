@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Prefetch critical resources -->
+    <link rel="prefetch" href="Seaweda Flower.svg" />
+    
+    <!-- Prefetch GSAP libraries -->
+    <link rel="prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" />
+    <link rel="prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js" />
+    
+    <!-- Prefetch Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style_s2.css" />
+    <title>Gsap Flip</title>
+  </head>
+  <body>
+    <div class="floating-ui-bar">
+      <div class="floating-ui-menu" id="floatingMenuBtn">
+        <span class="floating-ui-icon">&#9776;</span>
+        <span class="floating-ui-label">MENU</span>
+      </div>
+      <div class="floating-ui-scroll" id="floatingScrollBtn">
+        <span class="floating-ui-label">SCROLL</span>
+        <span class="floating-ui-scroll-circle">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <circle cx="22" cy="22" r="20" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.6" />
+            <polyline points="22,15 22,29" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <polyline points="18,25 22,29 26,25" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </div>
+      <div class="floating-ui-sound" id="floatingSoundBtn">
+        <span class="floating-ui-label">SOUND</span>
+        <span class="sound-bars" id="soundBars">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </span>
+      </div>
+    </div>
+    <h2 class="ball-text">.</h2>
+    <div class="loader">
+      <video id="forestLoop" class="forest-loop-video" autoplay muted loop playsinline>
+        <!-- Video source will be set dynamically by JavaScript -->
+      </video>
+    </div>
+    <canvas class="canvas"></canvas>
+    <canvas class="text-canvas"></canvas>
+    <canvas class="cursor-canvas"></canvas>
+
+    <!-- Breathing Exercise Visual -->
+    <div class="breathing-container" style="display: none;">
+      <img src="./Seaweda Flower.svg" class="breathing-background-flower" alt="Seaweda Flower Background" />
+      <svg class="meditation-progress-ring" viewBox="0 0 180 180" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="meditationProgressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color: rgba(255, 255, 255, 0.8); stop-opacity: 1" />
+            <stop offset="50%" style="stop-color: rgba(255, 255, 255, 1); stop-opacity: 1" />
+            <stop offset="100%" style="stop-color: rgba(255, 255, 255, 0.8); stop-opacity: 1" />
+          </linearGradient>
+        </defs>
+        <circle class="meditation-progress-ring-bg" stroke="rgba(255, 255, 255, 0.1)" stroke-width="2" fill="transparent" r="85" cx="90" cy="90"/>
+        <circle class="meditation-progress-ring-circle" stroke="url(#meditationProgressGradient)" stroke-width="2" fill="transparent" r="85" cx="90" cy="90" stroke-dasharray="534.07" stroke-dashoffset="534.07"/>
+      </svg>
+      <div class="breathing-circle">
+        <div class="breathing-text">BREATHE</div>
+        <div class="breathing-instruction">INHALE</div>
+      </div>
+      <div class="breathing-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+    </div>
+
+    <div class="link-buttons-container">
+      <button id="nextSceneBtn" class="link-button">Shop ForestVeda</button>
+      <button id="restartBtn" class="link-button">ForestVeda Meditation</button>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
+      integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"
+      integrity="sha512-tHvUcUQYi35zApvAa5TNR3fNhBQkVtkmWKfacnpxmix4/VTGz1lGjIVyLMp7gLgAvg+aKJjnVKokXJNS5GZ+/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./prefetch-utils.js"></script>
+    <script src="./app_s2.js"></script>
+    <script src="./floating-ui.js"></script>
+  </body>
+</html>
