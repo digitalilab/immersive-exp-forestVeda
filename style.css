@@ -338,12 +338,10 @@ canvas {
   opacity: 0;
 }
 
-/* Remove custom cursor element styles */
 .custom-cursor {
   display: none;
 }
 
-/* Restore default cursor */
 * {
   cursor: auto !important;
 }
