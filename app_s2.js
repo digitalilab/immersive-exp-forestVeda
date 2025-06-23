@@ -98,11 +98,12 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Add touch event listeners for mobile
-document.addEventListener('touchstart', handleTouch);
-document.addEventListener('touchmove', handleTouch);
+// Touch events shouldn't block scrolling on mobile devices
+document.addEventListener('touchstart', handleTouch, { passive: true });
+document.addEventListener('touchmove', handleTouch, { passive: true });
 
 function handleTouch(e) {
-  e.preventDefault(); // Prevent default touch behavior
+  // Do not prevent default scrolling on touch
   
   // Get touch position
   const touch = e.touches[0];
@@ -190,7 +191,14 @@ for (let i = 0; i < frameCount; i++) {
     loadedImages++;
     checkLoadingComplete();
   };
-  img.onload = () => {
+  img.onload = async () => {
+    if (img.decode) {
+      try {
+        await img.decode();
+      } catch (_) {
+        // Ignore decode errors
+      }
+    }
     loadedImages++;
     checkLoadingComplete();
   };
@@ -216,6 +224,10 @@ function checkLoadingComplete() {
           if (floatingUI) {
             floatingUI.classList.add('show');
           }
+
+          if (window.ScrollTrigger) {
+            ScrollTrigger.refresh();
+          }
           
           // Smooth entry animation for scene elements
           gsap.fromTo([canvas, textCanvas, cursorCanvas], {
@@ -225,8 +237,8 @@ function checkLoadingComplete() {
             duration: 0.8,
             ease: "power2.out"
           });
-          
-          render();
+
+          updateFrame();
         }
       });
     }, remainingTime);
@@ -234,6 +246,15 @@ function checkLoadingComplete() {
 }
 
 // Scroll animation with GSAP
+function updateFrame() {
+  const frameToShow = isFrameHeld ? heldFrame : ball.frame;
+  const idx = Math.max(0, Math.min(images.length - 1, Math.round(frameToShow)));
+  if (idx !== currentFrameIndex) {
+    currentFrameIndex = idx;
+    requestAnimationFrame(render);
+  }
+}
+
 gsap.to(ball, {
   frame: frameCount - 1,
   snap: "frame",
@@ -243,9 +264,7 @@ gsap.to(ball, {
     pin: "canvas",
     end: () => `+=${window.innerHeight * 2}`, // Reduced scroll length
   },
-  onUpdate: () => {
-    render();
-  },
+  onUpdate: updateFrame,
 });
 
 // Animation loop for smooth parallax and cursor
@@ -269,15 +288,41 @@ function animate() {
 // Start the animation loop
 animate();
 
-// Render current frame
+let lastGoodImage = null;
+let currentFrameIndex = -1;
+
+// Draw the current frame with graceful fallback for missing frames
 function render() {
+  const img = images[currentFrameIndex];
+
   context.canvas.width = images[0].width;
   context.canvas.height = images[0].height;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
+  try {
+    if (img && img.complete && img.naturalWidth > 0) {
+      context.drawImage(img, 0, 0);
+      lastGoodImage = img;
+    } else if (lastGoodImage) {
+      context.drawImage(lastGoodImage, 0, 0);
+    } else {
+      context.fillStyle = '#171717';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  } catch (err) {
+    console.error('drawImage failed', err);
+    if (lastGoodImage) {
+      try {
+        context.drawImage(lastGoodImage, 0, 0);
+      } catch (_) {
+        context.fillStyle = '#171717';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+  }
+
   // Use held frame if button was completed
   const frameToShow = isFrameHeld ? heldFrame : ball.frame;
-  context.drawImage(images[frameToShow], 0, 0);
 
   // Show link buttons in frames 180-200
   if (ball.frame >= 180) {
@@ -308,13 +353,18 @@ window.addEventListener('resize', () => {
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       img.src = currentFrame(i);
-      img.onload = () => {
+      img.onload = async () => {
+        if (img.decode) {
+          try {
+            await img.decode();
+          } catch (_) {}
+        }
         loadedImages++;
         let percent = Math.floor((loadedImages / frameCount) * 100);
         updateLoadingProgress(percent);
-        
+
         if (loadedImages === frameCount) {
-          render();
+          updateFrame();
         }
       };
       images.push(img);
