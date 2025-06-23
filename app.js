@@ -248,19 +248,28 @@ function animate() {
 // Start the animation loop
 animate();
 
+  let lastGoodImage = null;
+  let lastGoodIdx = 0;
+
 function render() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Clamp the frame index
   const idx = Math.max(0, Math.min(images.length - 1, Math.round(ball.frame)));
   const img = images[idx];
 
   if (img && img.complete && img.naturalWidth > 0) {
+    // If this image is valid, draw and remember it
     context.drawImage(img, 0, 0);
+    lastGoodImage = img;
+    lastGoodIdx = idx;
+  } else if (lastGoodImage) {
+    // Fallback: show the last good image if available
+    context.drawImage(lastGoodImage, 0, 0);
   } else {
-    // fallback: fill with a color or pattern
-    context.fillStyle = "#222"; // Or any color that matches your UI
+    // If no image was ever loaded, fill with color
+    context.fillStyle = "#171717"; // Or your preferred fallback color
     context.fillRect(0, 0, canvas.width, canvas.height);
-    // Optionally, draw a "missing frame" icon/text here
   }
 
   if (idx >= 160) {
