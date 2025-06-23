@@ -79,7 +79,6 @@ function updateParticles() {
   }
 }
 
-// Mouse position tracking
 let mouseX = 0;
 let mouseY = 0;
 let targetX = 0;
@@ -102,28 +101,30 @@ document.addEventListener('touchstart', handleTouch);
 document.addEventListener('touchmove', handleTouch);
 
 function handleTouch(e) {
-  e.preventDefault(); // Prevent default touch behavior
+  e.preventDefault();
   
-  // Get touch position
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+  const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+
+  if (scrollTop === 0 || scrollTop + clientHeight >= scrollHeight) {
+    e.preventDefault();
+  } 
+  
   const touch = e.touches[0];
   const touchX = touch.clientX;
   const touchY = touch.clientY;
   
-  // Calculate position relative to center of screen
   mouseX = (touchX - window.innerWidth / 2) * 0.02;
   mouseY = (touchY - window.innerHeight / 2) * 0.02;
   
-  // Create particles at touch position
   createParticles(touchX, touchY);
 }
 
-// Detect mobile device
 const isMobile = window.innerWidth <= 768; // Updated to standard mobile breakpoint
 
-// Set frame count
 const frameCount = 200; // Same frame count for both mobile and desktop
 
-// Choose image folder based on device
 const currentFrame = (index) =>
   isMobile
     ? `./Scene2_MO/${(index + 1).toString()}.webp`
@@ -133,7 +134,6 @@ const images = [];
 let ball = { frame: 0 };
 let loadedImages = 0;
 
-// Add state for frame holding
 let isFrameHeld = false;
 let heldFrame = 0;
 
